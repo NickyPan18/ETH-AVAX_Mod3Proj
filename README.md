@@ -22,4 +22,4 @@ At this point, it is assumed that the Solidity file has been downloaded and is i
 - Within Remix you can run the program by clicking the "Deploy & Run Transactions" button, the fourth button on the sidebar.
 - Then press the "Deploy" button to deploy the contract.
 - After this, you will be able to interact with the functions as well as call on the variables.
-- To explore the functionality of the transfer function, as well as test the limitations of the mint function, try to run the contract functions from different accounts/non-owner accounts.
+- To explore the functionality of the transfer function, as well as test the restrictions of the mint function, try to run the contract functions from different accounts/non-owner accounts.
