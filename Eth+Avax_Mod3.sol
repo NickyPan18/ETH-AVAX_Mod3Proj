@@ -1,40 +1,29 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.26;
+pragma solidity 0.8.20;
 
-contract MyTokenFunct {
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-    // public variables here
-    address public contractOwner;
-    string public tokenName = "NICOLA";
-    string public tokenAbbrev = "NLA";
-    uint256 public totalSupply = 0;
+contract MyTokenFunct is ERC20, Ownable{
 
-    // mapping variable here
-    mapping(address => uint256) public balances;
-
-    constructor() {
-        contractOwner = msg.sender;
-        balances[msg.sender]= totalSupply;
+    constructor() ERC20("NICOLA", "NLA") Ownable(msg.sender) {
     }
 
     // mint function - only contract owner can do
-    function mint (address _address, uint256 _value) public {
-        require(_address==contractOwner, "Only the contract owner can mint tokens");
-        totalSupply += _value;
-        balances[_address] += _value;
+    function mint (address _address, uint256 _value) public onlyOwner{
+        _mint(_address, _value);
     }
 
     // burn function - anyone
-    function burn (address _address, uint256 _value) public {
-        require(balances[_address] >= _value, "Insufficient balance!");
-        totalSupply -= _value;
-        balances[_address] -= _value;
+    function burn (address _address, uint256 _value) external {
+        require(balanceOf(_address) >= _value, "Insufficient balance!");
+        _burn(_address, _value);
     }
 
     // transfer function - anyone
-    function transferTokens(address _toAddress, uint256 _value) public {
-         require(balances[msg.sender] >= _value, "Insufficient balance!");
-         balances[msg.sender] -= _value;
-         balances[_toAddress] += _value;
+    function transferTokens(address _address, uint256 _value) external {
+        require(balanceOf(msg.sender) >= _value, "Insufficient balance");
+        _transfer(msg.sender, _address, _value);
     }
 }
